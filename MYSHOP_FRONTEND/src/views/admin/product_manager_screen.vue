@@ -4,7 +4,7 @@
    <br>
    <div class="search-bar">
       <form action="">
-         <input type="text" placeholder="Nhập từ khóa tìm kiếm" v-model="searchText">
+         <input type="text" placeholder="Tìm kiếm" v-model="searchText">
          <button type="submit">Tìm kiếm</button>
       </form>
    </div>
@@ -25,7 +25,7 @@
          <tr :key="index" v-for="(product, index) in filteredProducts">
             <th class="items-center">{{ product.name }}</th>
             <th class="items-center text-center">
-               {{ product.price.replace(/\B(?=(\d{3})+(?!\d))/g, ".") }}
+               {{ String(product.price).replace(/\B(?=(\d{3})+(?!\d))/g, ".") }}
                đồng
             </th>
             <th>
@@ -37,15 +37,15 @@
             </th>
             <th class="items-center">
                <router-link :to="{
-                  name: 'add_product',
+                  name: 'admin-product-edit',
                   params: { id: product._id },
                }">
-                  <button type="button">
+                  <button type="button" class="btn btn-success">
                      Sửa
                   </button>
                </router-link>
                &nbsp;
-               <button type="button" @click="deleteProduct(product._id)">
+               <button type="button" @click="deleteProduct(product._id)" class="btn btn-danger">
                   Xóa
                </button>
             </th>
@@ -55,7 +55,7 @@
 </template>
  
 <script>
-import navbarAdmin from "../../components/admin/navbarAdmin.vue";
+import navbarAdmin from "../../components/admin/navbar_admin.vue";
 import ProductService from "../../services/product.service";
 export default {
    components: {
@@ -88,6 +88,7 @@ export default {
       async getAllProduct() {
          try {
             this.products = await ProductService.getAll();
+            // console.log('123')
          } catch (error) {
             console.log(error);
          }
@@ -114,13 +115,27 @@ export default {
             }
          }
       },
+      createNewProduct() {
+         this.$router.push('/admin/add_product');
+      },
       time(timestamp) {
          const date = new Date(timestamp);
          return date.toLocaleString();
       },
    },
    created() {
+      console.log(this.$store.state.role)
       this.getAllProduct();
+   },
+   mounted() {
+      if (!this.$store.state.isLoggedIn) {
+         this.$router.push('/error');
+      }
+   },
+   mounted() {
+      if (!this.$store.state.isLoggedIn && this.$store.state.role != 'admin') {
+         this.$router.push('/error');
+      }
    },
 };
 </script>

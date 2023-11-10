@@ -14,22 +14,14 @@
                 <li><a href="#"><i class="fa fa-linkedin-square"></i></a></li>
             </ul>
         </div>
-
-
+        
     </footer>
-</template>
-<style media="screen">
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
+</template>
+
+<style media="screen">
 footer {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
     background: #111;
     height: auto;
     width: 100vw;

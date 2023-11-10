@@ -1,39 +1,40 @@
 <template>
-    <body>
-        <h1>Thông tin sản phẩm</h1>
-        <!-- <p>Please fill out this form with the required information</p> -->
-        <form @submit.prevent="save()">
-            <fieldset>
+    <body class="body_form">
+        <h1 class="h1_form">Thông tin sản phẩm</h1>
+
+        <form @submit.prevent="save()" class="product_form">
+            <fieldset class="fieldset_form">
                 <label>Nhập tên sản phẩm
-                    <input type="text" name="first-name" required @blur="validate()" v-model="product.name"
-                        :class="{ 'is-invalid': errors.name }" />
+                    <input class="input_product" type="text" name="first-name" required @blur="validate()"
+                        v-model="product.name" :class="{ 'is-invalid': errors.name }" />
                 </label>
                 <div class="invalid-feedback" v-if="errors.imgUrl">
                     {{ errors.imgUrl }}
                 </div>
                 <label>Nhập Giá sản phẩm
-                    <input type="number" min="1" name="last-name" required @blur="validate()" v-model="product.price"
-                        :class="{ 'is-invalid': errors.price }" />
+                    <input class="input_product" type="number" min="1" name="last-name" required @blur="validate()"
+                        v-model="product.price" :class="{ 'is-invalid': errors.price }" />
                 </label>
                 <div class="invalid-feedback" v-if="errors.imgUrl">
                     {{ errors.imgUrl }}
                 </div>
                 <label>Nhập dường link hình ảnh sản phẩm
-                    <input type="text" name="email" required @blur="validate()" v-model="product.imgUrl"
-                        :class="{ 'is-invalid': errors.imgUrl }" />
+                    <input class="input_product" type="text" name="email" required @blur="validate()"
+                        v-model="product.imgUrl" :class="{ 'is-invalid': errors.imgUrl }" />
                 </label>
                 <div class="invalid-feedback" v-if="errors.imgUrl">
                     {{ errors.imgUrl }}
                 </div>
                 <label>Nhập mô tả sản phẩm
-                    <textarea type="text" name="text" required style="height: 200px;" @blur="validate()"
-                        v-model="product.description" :class="{ 'is-invalid': errors.description }" />
+                    <textarea class="textarea_product" type="text" name="text" required style="height: 200px;"
+                        @blur="validate()" v-model="product.description" :class="{ 'is-invalid': errors.description }" />
                 </label>
                 <div class="invalid-feedback" v-if="errors.imgUrl">
                     {{ errors.imgUrl }}
                 </div>
             </fieldset>
-            <input type="submit" value="Submit" />
+            <input class="input_product" type="submit" value="Submit" />
+            <button class="input_product" @click="back_product_manager">Trở về</button>
         </form>
     </body>
 </template>
@@ -99,18 +100,19 @@ export default {
                         await ProductService.update(
                             this.$route.params.id,
                             this.product
-                        );
-                        this.$router.push({ name: "admin-dashboard" });
+                            );
+                        alert('Bạn đã thêm sửa phẩm thành công')
+                        // this.$router.push({ name: "admin-dashboard" });
                     } catch (error) {
                         console.log(error);
                     }
                 } else {
                     try {
                         await ProductService.create(this.product);
-                        // this.$router.push({ name: "admin-dashboard" });
-                        alert('123')
+                        alert('Bạn đã thêm sản phẩm thành công')
                     } catch (error) {
                         console.log(error);
+                        alert(error);
                     }
                 }
             }
@@ -122,6 +124,9 @@ export default {
                 console.log(error);
             }
         },
+        back_product_manager() {
+            this.$router.push('/admin/products');
+        }
     },
     created() {
         let productId = this.$route.params.id;
@@ -129,26 +134,30 @@ export default {
             this.getProduct(productId);
         }
     },
+    // mounted() {
+    //     if (this.$store.state.role != 'admin') {
+    //         this.$router.push('/error');
+    //     }
+    // },
 };
 </script>
 <style>
-body {
+.body_form {
     width: 100%;
     height: 100vh;
     margin: 0;
-    background-color: #1b1b32;
-    color: #f5f6f7;
+    /* background-color: #1b1b32; */
+    /* color: #f5f6f7; */
     font-family: Tahoma;
     font-size: 16px;
 }
 
-h1,
-p {
+.h1_form {
     margin: 1em auto;
     text-align: center;
 }
 
-form {
+.product_form {
     width: 60vw;
     max-width: 800px;
     min-width: 300px;
@@ -170,19 +179,19 @@ label {
     margin: 0.5rem 0;
 }
 
-input,
-textarea,
+.input_product,
+.textarea_product,
 select {
     margin: 10px 0 0 0;
     width: 100%;
     min-height: 2em;
 }
 
-input,
-textarea {
-    background-color: #0a0a23;
+.input_product,
+.textarea_product {
+    /* background-color: #0a0a23; */
     border: 1px solid #0a0a23;
-    color: #ffffff;
+    /* color: #ffffff; */
 }
 
 .inline {
@@ -191,19 +200,20 @@ textarea {
     vertical-align: middle;
 }
 
-input[type="submit"] {
+.input_product[type="submit"] {
     display: block;
     width: 60%;
     margin: 1em auto;
     height: 2em;
     font-size: 1.1rem;
-    background-color: #3b3b4f;
+    /* background-color: #3b3b4f; */
     border-color: white;
     min-width: 300px;
 }
 
-input[type="file"] {
+.input_product[type="file"] {
     padding: 1px 2px;
+    
 }
 
 a {

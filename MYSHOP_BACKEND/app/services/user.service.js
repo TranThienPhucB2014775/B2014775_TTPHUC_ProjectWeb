@@ -12,6 +12,8 @@ const { ObjectId } = require("mongodb");
             email: payload.email,
             role: payload.role,
             password: payload.password,
+            address: payload.address,
+            phoneNumber: payload.phoneNumber,
             createdAt: createdAt,
         };
         

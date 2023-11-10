@@ -9,16 +9,32 @@
             </div>
             <ul class="menu-items">
                 <li>
+                    <router-link to="/">Trang chủ</router-link>
+                </li>
+                <li>
                     <router-link to="/admin/products">Quản lý sản phẩm</router-link>
                 </li>
                 <li>
                     <router-link to="/admin/users">Quản lý tài khoản</router-link>
                 </li>
+                <li><a @click="Log_out" href="#">Đăng suất</a></li>
             </ul>
             <h1 class="logo">Gamer's Haven</h1>
         </div>
     </nav>
 </template>
+<script>
+export default {
+    methods: {
+        Log_out() {
+            this.$store.commit('logout');
+            this.$store.commit('setRole', '');
+            this.$store.commit('setEmail', '');
+            this.$router.push({ name: "index" });
+        }
+    },
+}
+</script>
 <style>
 .navbar input[type="checkbox"],
 .navbar .hamburger-lines {

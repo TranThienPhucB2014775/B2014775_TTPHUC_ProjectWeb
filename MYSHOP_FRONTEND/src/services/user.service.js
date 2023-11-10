@@ -11,7 +11,6 @@ class UserService {
         return (await this.api.post("/", data)).data;
     }
     async login(data) {
-        console.log(data)
         return (await this.api.post("/login", data)).data;
     }
     async deleteAll() {

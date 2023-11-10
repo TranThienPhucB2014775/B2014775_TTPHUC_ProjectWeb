@@ -8,20 +8,42 @@
                 <span class="line line3"></span>
             </div>
             <ul class="menu-items">
-
-                <li>
-                    <router-link to="/">Trang chủ</router-link>
-                </li>
                 <li><a href="#">Giới thiệu</a></li>
-
-                <li><a href="#"> Cửa hàng</a></li>
+                <router-link :to="{ name: 'products' }"><li><a>Cửa hàng</a></li></router-link>
+                <!-- <li><a href="#"> Cửa hàng</a></li> -->
                 <li><a href="#">Liên Hệ</a></li>
-                <li><router-link to="/login">Đăng nhập</router-link></li>
+                <li v-if="isUserRole" class="sign_in"><router-link to="/admin/products">Quản trị</router-link></li>
+                <li v-if="isLoggedIn"><router-link :to="{name: 'cart'}"><li><a>Giỏ hàng</a></li></router-link></li>
+                <li v-if="isLoggedIn">{{ this.$store.state.userEmail }}</li>
+                <li v-if="isLoggedIn"><a @click="Log_out" href="#">Đăng suất</a></li>
+                <div v-else>
+                    <li class="sign_in"><router-link to="/login">Đăng nhập</router-link></li>
+                </div>
             </ul>
-            <h1 class="logo">Gamer's Haven</h1>
+            <h1 class="logo"><router-link to="/">Gamer's Haven</router-link></h1>
         </div>
     </nav>
 </template>
+<script>
+export default {
+    methods: {
+        Log_out() {
+            this.$store.commit('logout');
+            this.$store.commit('setRole', '');
+            this.$store.commit('setID', '');
+
+        }
+    },
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.isLoggedIn;
+        },
+        isUserRole() {
+            return this.$store.state.role == 'admin';
+        },
+    },
+};
+</script>
 <style>
 .navbar input[type="checkbox"],
 .navbar .hamburger-lines {
@@ -159,7 +181,7 @@
     .navbar .menu-items li {
         margin-bottom: 1.8rem;
         font-size: 1.1rem;
-        font-weight: 500;
+        font-weight: 800;
     }
 
     .logo {

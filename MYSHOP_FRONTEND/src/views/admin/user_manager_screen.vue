@@ -4,12 +4,11 @@
    <div class="search-bar">
       <form action="">
          <input type="text" v-model="searchText" placeholder="Tìm kiếm...">
-         <button type="button" class="btn btn-danger" @click="removeAllProducts">Tìm kiếm</button>
+         <button type="submit" >Tìm kiếm</button>
       </form>
    </div>
    <div class="button-container">
-      <button type="button" class="btn btn-danger" @click="removeAllProducts">Xóa tất cả</button>
-      <button type="button" class="btn btn-success" @click="createNewProduct">Thêm mới</button>
+      <button type="button" class="btn btn-danger" @click="removeAllUsers">Xóa tất cả</button>
    </div>
    <table>
       <tr>
@@ -32,7 +31,7 @@
 </template>
  
 <script>
-import navbarAdmin from "../../components/admin/navbarAdmin.vue";
+import navbarAdmin from "../../components/admin/navbar_admin.vue";
 import UserService from "../../services/user.service";
 
 export default {
@@ -67,6 +66,7 @@ export default {
          try {
             this.users = await UserService.getAll();
          } catch (error) {
+            console.log('123')
             console.log(error);
          }
       },
@@ -74,7 +74,7 @@ export default {
          if (confirm("Bạn muốn xóa Tài khoản này?")) {
             try {
                await UserService.delete(UserId);
-               this.$router.push({ name: "user.list" });
+               this.$router.push({ name: "admin-users" });
                this.getAllUser();
             } catch (error) {
                console.log(error);
@@ -85,7 +85,7 @@ export default {
          if (confirm("Bạn muốn xóa tất cả Tài khoản?")) {
             try {
                await UserService.deleteAll();
-               this.$router.push({ name: "user.list" });
+               this.$router.push({ name: "admin-users" });
                this.getAllUser();
             } catch (error) {
                console.log(error);
@@ -100,11 +100,17 @@ export default {
    created() {
       this.getAllUser();
    },
+   mounted() {
+      if (!this.$store.state.isLoggedIn && this.$store.state.role != 'admin') {
+         this.$router.push('/error');
+      }
+   },
 };
 </script>
  
 <style scoped>
 .search-bar {
+   padding-left: 10px;
    margin-bottom: 10px;
    display: flex;
    align-items: center;
@@ -115,10 +121,20 @@ export default {
    padding: 8px;
    border: 1px solid #ccc;
    border-radius: 4px;
-   width: 200px;
+   margin-right: 8px;
+}
+
+.search-bar button[type="submit"] {
+   padding: 8px 12px;
+   background-color: #4caf50;
+   color: white;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
 }
 
 .button-container {
+   padding-right: 10px;
    display: flex;
    align-items: center;
    justify-content: flex-end;

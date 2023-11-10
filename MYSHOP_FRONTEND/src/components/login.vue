@@ -85,16 +85,20 @@ export default {
             this.$router.push('/');
         },
         async login() {
-            console.log(this.user)
             if (this.validate()) {
                 const userLogin = await UserService.login(this.user);
-                const localUserLogin = JSON.stringify(userLogin);
-                localStorage.setItem("localUserLogin", localUserLogin);
                 if (userLogin.role === "user") {
-                    // this.$router.push({ name: "home" });
+                    this.$store.commit('login');
+                    this.$store.commit('setRole', 'user');
+                    this.$store.commit('setName', userLogin.name);
+                    this.$store.commit('setID', userLogin.id);
+                    this.$router.push({ name: "index" });
                 } else if (userLogin.role === "admin") {
-                    console.log('abc')
-                    // this.$router.push({ name: "admin-dashboard" });
+                    this.$store.commit('login');
+                    this.$store.commit('setRole', 'admin');
+                    this.$store.commit('setName', 'admin');
+                    this.$store.commit('setID', userLogin.id);
+                    this.$router.push({ name: "index" });
                 } else {
                     alert("Xin lỗi! Bạn đã nhập sai email hoặc mật khẩu!");
                 }

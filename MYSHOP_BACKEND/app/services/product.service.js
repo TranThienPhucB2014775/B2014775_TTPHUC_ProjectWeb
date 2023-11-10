@@ -59,7 +59,7 @@ const { ObjectId } = require("mongodb");
             { $set: update},
             { returnDocument: "after" }
         );
-        return result.value;
+        return result;
     }
 
     async delete(id) {

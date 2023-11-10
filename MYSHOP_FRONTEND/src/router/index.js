@@ -22,23 +22,47 @@ const routes = [
         component: () => import('../views/admin/user_manager_screen.vue'),
     },
     {
-        path: "/admin/products", 
+        path: "/admin/products",
         name: "admin-products",
-        component: () => import('../views/admin/product_manager_screen.vue'),      
+        component: () => import('../views/admin/product_manager_screen.vue'),
 
     },
     {
-        path: "/admin/form_product",
+        path: "/admin/add_product",
         name: "admin-add-products",
         component: () => import('../components/admin/product_form.vue'),
 
     },
-    //Home
     {
-        path: "/",
+        path: "/product/edit_product/:id",
+        name: "admin-product-edit",
+        component: () => import('../components/admin/product_form.vue'),
+    },
+    {
+        path: "/:pathMatch(.*)*", //regular expression
+        name: "error",
+        component: () => import('../views/Error.vue'),
+    },
+    // Home
+    {
+        path: "",
         name: "index",
         component: index,
+        children: [
+            {
+                path: "/products",
+                name: "products",
+                component: () => import('../components/list_product.vue'),
+            },
+            {
+                path: "/cart",
+                name: "cart",
+                component: () => import('../components/cart_products.vue'),
+            },
+        ]
     },
+    //list product
+
 ];
 
 const router = createRouter({

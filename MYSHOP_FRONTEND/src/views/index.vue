@@ -1,31 +1,54 @@
 <template>
    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
    <navbar />
+   <router-view></router-view>
+   <div>
 
-   <body>
-      <bannerSlide />
-   </body>
    <BaseFooter />
+      
+      
+   </div>
 </template>
  
 <script>
 import navbar from '../components/navbar.vue'
 import login from '../components/login.vue'
 import BaseFooter from "../components/footer.vue"
-// import BaseSlider from "../components/BannerSlide.vue"
-import bannerSlide from '../components/bannerSlide.vue';
+
 export default {
    name: "Home",
    components: {
       navbar,
       login,
       BaseFooter,
-      bannerSlide
    },
+   created() {
+      // console.log(this.$store.state.role)
+      // console.log(this.$store.state.isLoggedIn)
+   },
+
 };
 </script>
  
 <style scoped>
+html,
+body {
+   height: 100%;
+   margin: 0;
+   padding: 0;
+}
+
+#app {
+   min-height: 100%;
+   position: relative;
+}
+
+footer {
+   height: auto;
+   position: absolute;
+   /* Các thuộc tính CSS khác cho phần footer */
+}
+
 .wrapper {
    max-width: 100%;
    background: #fff;

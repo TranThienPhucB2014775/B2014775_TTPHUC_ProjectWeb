@@ -8,8 +8,17 @@
                         <div class="input-field">
                             <input type="email" v-model="user.email" placeholder="Email" autocomplete="nope"
                                 @blur="validate()" :class="{ 'is-invalid': errors.email }">
-                            <div class="invalid-feedback" v-if="errors.password">
+                            <div class="invalid-feedback" v-if="errors.email">
                                 {{ errors.email }}
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="input-field">
+                            <input type="text" v-model="user.name" placeholder="Họ và tên" autocomplete="nope"
+                                @blur="validate()" :class="{ 'is-invalid': errors.name }">
+                            <div class="invalid-feedback" v-if="errors.name">
+                                {{ errors.name }}
                             </div>
                         </div>
                     </li>
@@ -26,9 +35,29 @@
                         <div class="input-field">
                             <input type="password" v-model="user.confirmPassword" placeholder="Confirm password"
                                 @blur="validate()" :class="{ 'is-invalid': errors.confirmPassword }"
-                                autocomplete="new-password">
+                                >
                             <div class="invalid-feedback" v-if="errors.confirmPassword">
                                 {{ errors.confirmPassword }}
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="input-field">
+                            <input type="text" v-model="user.address" placeholder="Địa chỉ"
+                                @blur="validate()" :class="{ 'is-invalid': errors.address }"
+                            >
+                            <div class="invalid-feedback" v-if="errors.address">
+                                {{ errors.address }}
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="input-field">
+                            <input type="text" v-model="user.phoneNumber" placeholder="Số điện thoại"
+                                @blur="validate()" :class="{ 'is-invalid': errors.phoneNumber }"
+                            >
+                            <div class="invalid-feedback" v-if="errors.phoneNumber">
+                                {{ errors.phoneNumber }}
                             </div>
                         </div>
                     </li>
@@ -57,13 +86,19 @@ export default {
         return {
             errors: {
                 email: "",
+                name: "",
                 password: "",
                 confirmPassword: "",
+                address: "",
+                phoneNumber: "",
             },
             user: {
                 email: "",
+                name: "",
                 password: "",
                 confirmPassword: "",
+                address: "",
+                phoneNumber: "",
             },
         }
     },
@@ -80,12 +115,24 @@ export default {
                 this.errors.email = "Email là bắt buộc";
                 isValid = false;
             }
+            if (!this.user.name) {
+                this.errors.name = "Họ và tên là bắt buộc";
+                isValid = false;
+            }
             if (!this.user.password) {
                 this.errors.password = "Mật khẩu là bắt buộc";
                 isValid = false;
             }
             if (this.user.confirmPassword != this.user.password) {
                 this.errors.confirmPassword = "Mật khẩu chưa đúng";
+                isValid = false;
+            }
+            if(!this.user.address){
+                this.errors.address = "Địa chỉ là bắt buộc";
+                isValid = false;
+            }
+            if( !this.user.phoneNumber){
+                this.errors.phoneNumber = "Số điện thoại là bắt buộc";
                 isValid = false;
             }
             return isValid;
