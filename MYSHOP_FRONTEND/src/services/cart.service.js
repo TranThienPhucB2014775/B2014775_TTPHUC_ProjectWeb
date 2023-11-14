@@ -5,18 +5,20 @@ class CartService {
         this.api = createApiClient(baseUrl);
     }
     async getAll(data) {
-        console.log(data)
         return (await this.api.post("/find",data)).data;
     }
     async create(data) {
         console.log(data)
         return (await this.api.post("/", data)).data;
     }
-    async update() {
-        return (await this.api.put("/")).data;
+    async update(data) {
+        return (await this.api.put("/",data)).data;
     }
-    async delete() {
-        return (await this.api.delete("/")).data;
+    async deleteAll(data) {
+        return (await this.api.post("/deleteall",data)).data;
+    }
+    async delete(data) {
+        return (await this.api.post("/delete",data)).data;
     }
 }
 

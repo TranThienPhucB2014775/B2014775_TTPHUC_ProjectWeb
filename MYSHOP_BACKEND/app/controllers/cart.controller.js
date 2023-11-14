@@ -84,9 +84,15 @@ exports.update = async (req, res, next) => {
 
 // Xóa sản phẩm theo id
 exports.delete = async (req, res, next) => {
+    // if (!req.body?.product_id) {
+    //     return next(new ApiError(400, "Sản phẩm không được để trống"));
+    // }
+    if (!req.body?.user_id) {
+        return next(new ApiError(400, `Lỗi khi xoá sản phẩm khỏi giỏ hàng ${req.body.user_id}`));
+    }
     try {
         const cartService = new CartService(MongoDB.client);
-        const document = await cartService.delete(req.params.id);
+        const document = await cartService.delete(req.body);
         if (!document) {
             return next(new ApiError(404, "Sản phẩm không được tìm thấy"));
         }

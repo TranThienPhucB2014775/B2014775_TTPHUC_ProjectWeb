@@ -11,10 +11,10 @@
                 <li><a href="#">Giới thiệu</a></li>
                 <router-link :to="{ name: 'products' }"><li><a>Cửa hàng</a></li></router-link>
                 <!-- <li><a href="#"> Cửa hàng</a></li> -->
+                <li v-if="isLoggedIn"><router-link :to="{name: 'cart'}"><a>Giỏ hàng</a></router-link></li>
                 <li><a href="#">Liên Hệ</a></li>
                 <li v-if="isUserRole" class="sign_in"><router-link to="/admin/products">Quản trị</router-link></li>
-                <li v-if="isLoggedIn"><router-link :to="{name: 'cart'}"><li><a>Giỏ hàng</a></li></router-link></li>
-                <li v-if="isLoggedIn">{{ this.$store.state.userEmail }}</li>
+                <li v-if="isLoggedIn">{{ this.$store.state.userName }}</li>
                 <li v-if="isLoggedIn"><a @click="Log_out" href="#">Đăng suất</a></li>
                 <div v-else>
                     <li class="sign_in"><router-link to="/login">Đăng nhập</router-link></li>

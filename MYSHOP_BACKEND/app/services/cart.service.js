@@ -52,10 +52,10 @@ class CartService {
         return result;
     }
 
-    async delete(user_id, product_id) {
+    async delete(payload) {
         const result = await this.Cart.findOneAndDelete({
-            user_id: ObjectId.isValid(user_id) ? new ObjectId(user_id) : null,
-            product_id: ObjectId.isValid(product_id) ? new ObjectId(product_id) : null,
+            user_id: payload.user_id,
+            product_id: payload.product_id,
         });
         return result;
     }
