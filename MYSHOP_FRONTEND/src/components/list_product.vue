@@ -1,4 +1,5 @@
 <template>
+    <hr>
     <BaseSlider />
     <h1 class="h1_list_product">Danh sách sản phẩm</h1>
     <div class="search-bar">

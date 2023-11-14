@@ -8,11 +8,11 @@
                 <span class="line line3"></span>
             </div>
             <ul class="menu-items">
-                <li><a href="#">Giới thiệu</a></li>
+                <router-link :to="{ name: 'about' }"><li><a>Giới thiệu</a></li></router-link>
                 <router-link :to="{ name: 'products' }"><li><a>Cửa hàng</a></li></router-link>
                 <!-- <li><a href="#"> Cửa hàng</a></li> -->
                 <li v-if="isLoggedIn"><router-link :to="{name: 'cart'}"><a>Giỏ hàng</a></router-link></li>
-                <li><a href="#">Liên Hệ</a></li>
+                <router-link :to="{ name: 'contact' }"><li><a>Liên Hệ</a></li></router-link>
                 <li v-if="isUserRole" class="sign_in"><router-link to="/admin/products">Quản trị</router-link></li>
                 <li v-if="isLoggedIn">{{ this.$store.state.userName }}</li>
                 <li v-if="isLoggedIn"><a @click="Log_out" href="#">Đăng suất</a></li>
