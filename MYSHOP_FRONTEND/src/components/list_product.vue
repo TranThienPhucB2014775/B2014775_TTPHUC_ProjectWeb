@@ -26,6 +26,9 @@
         </div>
 
     </div>
+    <div class="load-more-container">
+        <button class="btn btn-primary px-3 ms-2 smaller-icon" @click="showMoreProducts">Xem thêm</button>
+    </div>
 </template>
 <script>
 import ProductService from "../services/product.service";
@@ -39,6 +42,7 @@ export default {
         return {
             products: [],
             searchText: "",
+            showMore: 12,
         };
     },
 
@@ -49,14 +53,30 @@ export default {
                 return [name, description].join("");
             });
         },
+        // filteredProducts() {
+        //     if (!this.searchText) return this.products;
+        //     return this.products.filter((_product, index) =>
+        //         this.productStrings[index].includes(this.searchText)
+        //     );
+        // },
         filteredProducts() {
-            if (!this.searchText) return this.products;
-            return this.products.filter((_product, index) =>
-                this.productStrings[index].includes(this.searchText)
+            if (!this.searchText) {
+                return this.products.slice(0, this.showMore);
+            }
+            const searchTextLower = this.searchText.toLowerCase();
+            const filtered = this.products.filter((_product, index) =>
+                this.productStrings[index].toLowerCase().includes(searchTextLower)
             );
+            if (filtered.length <= this.showMore) {
+                return filtered;
+            }
+            return filtered.slice(0, this.showMore);
         },
         filteredProductsCount() {
             return this.filteredProducts.length;
+        },
+        showMoreProducts() {
+            this.showMore += 12;
         },
     },
     methods: {
@@ -73,16 +93,14 @@ export default {
                 product_id: index._id,
                 quantity: '1'
             }
-            try{
-                // console.log(filter)
-                await cartService.create(filter)   
-                alert(`Bạn đã thêm sản phẩm ${index.name} thành công`); 
+            try {
+                const result = await cartService.create(filter)
+                alert(result.message);
             }
-            catch(error){
-                console.log(error)
-                alert (error)
+            catch (error) {
+                alert(error)
             }
-            
+
         },
     },
 
@@ -92,6 +110,12 @@ export default {
 };
 </script>
 <style>
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
 .search-bar {
     padding-left: 10px;
     margin-bottom: 10px;

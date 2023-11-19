@@ -13,6 +13,7 @@ const { ObjectId } = require("mongodb");
             imgUrl: payload.imgUrl,
             price: payload.price,
             description: payload.description, 
+            quantity: payload.quantity,
             createdAt: createdAt,
         };
         // Xóa các trường không xác định

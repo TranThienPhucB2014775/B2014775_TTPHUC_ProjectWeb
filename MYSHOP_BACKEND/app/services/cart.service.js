@@ -53,6 +53,7 @@ class CartService {
     }
 
     async delete(payload) {
+        console.log(JSON.stringify.payload)
         const result = await this.Cart.findOneAndDelete({
             user_id: payload.user_id,
             product_id: payload.product_id,

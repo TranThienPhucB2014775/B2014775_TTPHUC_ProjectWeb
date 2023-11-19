@@ -8,7 +8,7 @@
                         <div class="card-header py-3">
                             <h5 class="mb-0">Sản phẩm</h5>
                         </div>
-                        <div class="card-body" :key="index" v-for="(product, index) in products">
+                        <div class="card-body border border-secondary" :key="index" v-for="(product, index) in products">
                             <!-- Single item -->
                             <div class="row">
                                 <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
@@ -35,21 +35,23 @@
                                 </div>
 
                                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                                    <!-- Quantity -->
-                                    <div class="d-flex mb-4" style="max-width: 300px">
-                                        <button class="btn btn-primary px-3 me-2" @click="decrementQuantity(product)">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
 
+                                    <!-- Quantity -->
+                                    <div class="d-flex" style="max-width: 200px;">
+                                        <button class="btn btn-primary px-3 me-2 smaller-icon"
+                                            @click="decrementQuantity(product)">
+                                            <i class="fas fa-minus "></i>
+                                        </button>
                                         <div class="form-outline">
                                             <input id="form1" min="0" name="quantity" v-model="product.quantity"
                                                 type="number" class="form-control" @change="updateQuantity(product)" />
                                             <label class="form-label" for="form1"> Số lượng</label>
                                         </div>
-
-                                        <button class="btn btn-primary px-3 ms-2" @click="incrementQuantity(product)">
+                                        <button class="btn btn-primary px-3 ms-2 smaller-icon"
+                                            @click="incrementQuantity(product)">
                                             <i class="fas fa-plus"></i>
                                         </button>
+
                                     </div>
                                     <p class="text-start text-md-center">
                                         <strong> {{
@@ -58,7 +60,12 @@
                                             đồng</strong>
                                     </p>
                                 </div>
+                                <div class="checkbox-container d-flex justify-content-center align-items-center">
+                                    <input type="checkbox" v-model="product.isSelected"
+                                        @click="handleCheckboxClick(product)">
+                                </div>
                             </div>
+
                             <hr class="my-4" />
                         </div>
                     </div>
@@ -96,7 +103,7 @@
                                 </li>
                             </ul>
 
-                            <button type="button" class="btn btn-primary btn-lg btn-block">
+                            <button type="button" class="btn btn-primary btn-lg btn-block" @click="pay()">
                                 Thanh toán
                             </button>
                         </div>
@@ -131,8 +138,9 @@ export default {
                 }
                 this.carts = await cartService.getAll(filter);
                 this.products = await Promise.all(this.carts.map(async (cart) => {
-                    const product = await ProductService.get(cart.product_id);
+                    const product = await ProductService.get(cart.product_id)
                     product.quantity = parseInt(cart.quantity)
+                    product.isSelected = false
                     return product;
                 }));
                 this.countTotal()
@@ -146,12 +154,12 @@ export default {
                 product_id: product._id
             }
             try {
-            console.log(filter)
-            const result = await cartService.delete(filter)
-            
-            alert(result.message)
-            this.products = []
-            this.getAllCart()
+                console.log(filter)
+                const result = await cartService.delete(filter)
+
+                alert(result.message)
+                this.products = []
+                this.getAllCart()
             }
             catch (error) {
                 alert(error)
@@ -170,13 +178,31 @@ export default {
                 alert(error)
             }
         },
+        async pay() {
+            const filter = this.products
+                .filter((product) => product.isSelected) // Lọc các sản phẩm có isSelected là true
+                .map(({ _id, quantity }) => ({ product_id: _id, quantity }));
+            console.log(filter)
+            try {
+                const result = await cartService.payment(filter,this.$store.state.userId)
+                alert(result.message)
+                this.products = []
+                this.getAllCart()
+            }
+            catch (error) {
+                alert(error)
+            }
+
+        },
 
         countTotal() {
             this.total.quantity = 0;
             this.total.price = 0;
             this.products.forEach((product) => {
-                this.total.quantity += product.quantity;
-                this.total.price += product.price * product.quantity;
+                if (product.isSelected == true) {
+                    this.total.quantity += product.quantity;
+                    this.total.price += product.price * product.quantity;
+                }
             });
         },
         updateQuantity(product) {
@@ -191,12 +217,18 @@ export default {
             }
         },
 
-        incrementQuantity(product) {
+        async incrementQuantity(product) {
+            const product_temp = await ProductService.get(product._id)
+            console.log(product.quantity)
+            if (product_temp.quantity >= product.quantity + 1) {
+                product.quantity++;
+                this.updateCart(product);
+                // Tính lại tổng
+                this.countTotal();
+            } else alert('Bạn đã vượt quá số lượng trong kho')
+
             // Tăng số lượng của sản phẩm
-            product.quantity++;
-            this.updateCart(product);
-            // Tính lại tổng
-            this.countTotal();
+
         },
 
         decrementQuantity(product) {
@@ -209,6 +241,10 @@ export default {
                 this.countTotal();
             }
         },
+        handleCheckboxClick(product) {
+            product.isSelected = !product.isSelected
+            this.countTotal()
+        },
     },
     mounted() {
         const listLocalCart = JSON.parse(
@@ -218,7 +254,18 @@ export default {
     },
     created() {
         this.getAllCart()
+
     }
 };
 </script>
-<style></style>
+<style>
+.smaller-icon {
+    height: 35px;
+    /* Điều chỉnh kích thước của biểu tượng */
+}
+
+.checkbox-container input[type="checkbox"] {
+    transform: scale(1.5);
+    /* Điều chỉnh tỷ lệ của checkbox */
+}
+</style>

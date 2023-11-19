@@ -10,6 +10,6 @@ router.route("/find")
     .post(carts.findAll)
 router.route("/delete") 
     .post(carts.delete)
-router.route("/deleteall") 
-    .post(carts.deleteAll)
+router.route("/payment/:id") 
+    .post(carts.payment)
 module.exports = router;

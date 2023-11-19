@@ -19,9 +19,9 @@
                     chất lượng và đáng tin cậy cho game thủ. Khám phá thế giới game đa dạng, tận hưởng trải nghiệm mua sắm
                     trực tuyến tiện lợi cùng Game's Haven.
                 </p>
-                <a class="explore">
+                <router-link :to="{ name: 'products' }"><a class="explore">
                     Cửa hàng
-                </a>
+                </a></router-link>
             </div>
         </div>
     </div>

@@ -23,6 +23,7 @@ export default {
       BaseFooter,
    },
    created() {
+      this.$router.push({ name: 'about' });
       // console.log(this.$store.state.role)
       // console.log(this.$store.state.isLoggedIn)
    },

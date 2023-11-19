@@ -25,10 +25,15 @@
                 <div class="invalid-feedback" v-if="errors.imgUrl">
                     {{ errors.imgUrl }}
                 </div>
+                <label>Nhập số lượng sản phẩm
+                    <input class="textarea_product" type="number" name="text" required @blur="validate()"
+                        v-model="product.quantity" :class="{ 'is-invalid': errors.quantity }" />
+                </label>
                 <label>Nhập mô tả sản phẩm
                     <textarea class="textarea_product" type="text" name="text" required style="height: 200px;"
                         @blur="validate()" v-model="product.description" :class="{ 'is-invalid': errors.description }" />
                 </label>
+
                 <div class="invalid-feedback" v-if="errors.imgUrl">
                     {{ errors.imgUrl }}
                 </div>
@@ -49,12 +54,14 @@ export default {
                 imgUrl: "",
                 price: "",
                 description: "",
+                quantity: "",
             },
             product: {
                 name: "",
                 imgUrl: "",
                 price: "",
                 description: "",
+                quantity: "",
             },
         };
     },
@@ -88,6 +95,10 @@ export default {
                 this.errors.description = "Mô tả sản phẩm là bắt buộc";
                 isValid = false;
             }
+            if (!this.product.quantity) {
+                this.errors.quantity = "Số lượng sản phẩm là bắt buộc";
+                isValid = false;
+            }
             return isValid;
         },
         isNumber(value) {
@@ -100,7 +111,7 @@ export default {
                         await ProductService.update(
                             this.$route.params.id,
                             this.product
-                            );
+                        );
                         alert('Bạn đã thêm sửa phẩm thành công')
                         // this.$router.push({ name: "admin-dashboard" });
                     } catch (error) {
@@ -213,7 +224,7 @@ select {
 
 .input_product[type="file"] {
     padding: 1px 2px;
-    
+
 }
 
 a {
