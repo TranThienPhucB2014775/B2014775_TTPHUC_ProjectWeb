@@ -88,6 +88,7 @@ export default {
             }
         },
         async addProductToCart(index) {
+            console.log(this.$store.state.userId)
             const filter = {
                 user_id: this.$store.state.userId,
                 product_id: index._id,

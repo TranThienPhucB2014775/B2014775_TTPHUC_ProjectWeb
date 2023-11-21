@@ -7,6 +7,7 @@ const ApiError = require("../api-error");
 
 //Tạo và lưu trữ một user mới
 exports.create = async (req, res, next) => {
+
     if (!req.body?.user_id) {
         return next(new ApiError(400, "User không được để trống"));
     }
@@ -17,6 +18,7 @@ exports.create = async (req, res, next) => {
         return next(new ApiError(400, "Số lượng không được để trống"));
     }
     try {
+
         const cartService = new CartService(MongoDB.client);
         const productService = new ProductService(MongoDB.client);
         const filter = {
@@ -25,19 +27,15 @@ exports.create = async (req, res, next) => {
         };
         const result = await cartService.find(filter)
         product = await productService.findById(req.body.product_id)
-        // console.log(product.name)
-        if (product.quantity >= result[0].quantity + 1) {
-            if (result == '') {
-                return res.send(await cartService.create(req.body));
-            } else {
-                result[0].quantity++
-                await cartService.update(result[0]);
-                console.log(product.name)
-                return res.send( {message: `Bạn đã thêm sản phẩm ${product.name}`});
-            }
-        }else return res.send({message:`Số lượng sản phẩm ${product.name} đã đạt giới hạn` });
-
-
+        if (result == '') {
+            await cartService.create(req.body);
+            return res.send({ message: `Bạn đã thêm sản phẩm ${product.name}` });
+        } else if (product.quantity >= result[0].quantity + 1) {
+            result[0].quantity++
+            await cartService.update(result[0]);
+            return res.send({ message: `Bạn đã thêm sản phẩm ${product.name}` });
+        }
+        else return res.send({ message: `Số lượng sản phẩm ${product.name} đã đạt giới hạn` });
     } catch (error) {
         return next(
             new ApiError(500, `Đã xảy ra lỗi khi thêm vào giỏ hàngg`)

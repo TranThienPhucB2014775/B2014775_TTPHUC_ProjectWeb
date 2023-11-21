@@ -185,7 +185,7 @@ export default {
             console.log(filter)
             try {
                 const result = await cartService.payment(filter,this.$store.state.userId)
-                alert(result.message)
+                alert('Bạn đã thanh toán thành công')
                 this.products = []
                 this.getAllCart()
             }

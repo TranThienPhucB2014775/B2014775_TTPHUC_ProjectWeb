@@ -8,7 +8,7 @@ class CartService {
         return (await this.api.post("/find",data)).data;
     }
     async create(data) {
-        // console.log(data)
+        console.log(data)
         return (await this.api.post("/", data)).data;
     }
     async update(data) {
