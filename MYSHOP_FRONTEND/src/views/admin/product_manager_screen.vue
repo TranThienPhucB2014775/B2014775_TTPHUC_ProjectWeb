@@ -76,9 +76,15 @@ export default {
       },
       filteredProducts() {
          if (!this.searchText) return this.products;
-         return this.products.filter((_product, index) =>
-            this.productStrings[index].includes(this.searchText)
-         );
+         const lowercaseSearchText = this.searchText.toLowerCase();
+         return this.products.filter((product) => {
+            const lowercaseName = product.name.toLowerCase();
+            const lowercaseDescription = product.description.toLowerCase();
+            return (
+               lowercaseName.includes(lowercaseSearchText) ||
+               lowercaseDescription.includes(lowercaseSearchText)
+            );
+         });
       },
       filteredProductsCount() {
          return this.filteredProducts.length;
@@ -102,7 +108,7 @@ export default {
             } catch (error) {
                console.log(error);
             }
-         }
+         } n
       },
       async removeAllProducts() {
          if (confirm("Bạn muốn xóa tất cả Sản phẩm?")) {

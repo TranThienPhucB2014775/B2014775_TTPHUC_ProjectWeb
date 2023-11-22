@@ -9,8 +9,8 @@
             </div>
             <ul class="menu-items">
                 <router-link :to="{ name: 'about' }"><li><a>Giới thiệu</a></li></router-link>
-                <router-link :to="{ name: 'products' }"><li><a>Cửa hàng</a></li></router-link>
-                <li v-if="isLoggedIn"><router-link :to="{name: 'cart'}"><a>Giỏ hàng</a></router-link></li>
+                <router-link :to="{ name: 'products' }"><li v-if="!isUserRole"><a>Cửa hàng</a></li></router-link>
+                <li v-if="isLoggedIn && !isUserRole"><router-link :to="{name: 'cart'}"><a>Giỏ hàng</a></router-link></li>
                 <router-link :to="{ name: 'contact' }"><li><a>Liên Hệ</a></li></router-link>
                 <li v-if="isUserRole" class="sign_in"><router-link to="/admin/products">Quản trị</router-link></li>
                 <li v-if="isLoggedIn">{{ this.$store.state.userName }}</li>
@@ -19,7 +19,7 @@
                     <li class="sign_in"><router-link to="/login">Đăng nhập</router-link></li>
                 </div>
             </ul>
-            <h1 class="logo"><router-link to="/">Gamer's Haven</router-link></h1>
+            <h1 class="logo"><router-link :to="{ name: 'about' }">Gamer's Haven</router-link></h1>
         </div>
     </nav>
 </template>

@@ -4,7 +4,7 @@
    <div class="search-bar">
       <form action="">
          <input type="text" v-model="searchText" placeholder="Tìm kiếm...">
-         <button type="submit" >Tìm kiếm</button>
+         <button type="submit">Tìm kiếm</button>
       </form>
    </div>
    <div class="button-container">
@@ -53,9 +53,11 @@ export default {
       },
       filteredUsers() {
          if (!this.searchText) return this.users;
-         return this.users.filter((_user, index) =>
-            this.userStrings[index].includes(this.searchText)
-         );
+         const lowercaseSearchText = this.searchText.toLowerCase();
+         return this.users.filter((user) => {
+            const lowercaseEmail = user.email.toLowerCase();
+            return lowercaseEmail.includes(lowercaseSearchText);
+         });
       },
       filteredUsersCount() {
          return this.filteredUsers.length;
