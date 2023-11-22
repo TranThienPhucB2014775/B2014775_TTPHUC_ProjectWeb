@@ -112,8 +112,9 @@ export default {
                             this.$route.params.id,
                             this.product
                         );
-                        alert('Bạn đã thêm sửa phẩm thành công')
+                        alert('Bạn đã sửa phẩm thành công')
                         // this.$router.push({ name: "admin-dashboard" });
+                        this.back_product_manager()
                     } catch (error) {
                         console.log(error);
                     }
@@ -121,6 +122,7 @@ export default {
                     try {
                         await ProductService.create(this.product);
                         alert('Bạn đã thêm sản phẩm thành công')
+                        this.back_product_manager()
                     } catch (error) {
                         console.log(error);
                         alert(error);

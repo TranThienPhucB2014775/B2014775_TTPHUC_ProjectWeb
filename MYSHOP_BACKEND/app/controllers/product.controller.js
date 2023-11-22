@@ -82,6 +82,7 @@ exports.update = async (req, res, next) => {
 // Xóa sản phẩm theo id
 exports.delete = async (req, res, next) => {
     try {
+        console.log(req.params.id)
         const productService = new ProductService(MongoDB.client);
         const document = await productService.delete(req.params.id);
         if (!document) {

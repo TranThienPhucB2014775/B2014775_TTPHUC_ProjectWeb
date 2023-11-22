@@ -30,7 +30,7 @@ const { ObjectId } = require("mongodb");
             { $set: product },
             { returnDocument: "after", upsert: true }
         );
-        return result.value;
+        return result;
     }
 
     async find(filter) {
@@ -64,10 +64,11 @@ const { ObjectId } = require("mongodb");
     }
 
     async delete(id) {
+        console.log(id)
         const result = await this.Product.findOneAndDelete({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });
-        return result.value;
+        return result;
     }
 
     async deleteAll() {
